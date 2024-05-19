@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:batch="http://www.mulesoft.org/schema/mule/batch"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/batch/current/mule-batch.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="Batch-Processing-POC01" doc:id="82a476fa-d200-44cf-833f-c07ff764507e" >
+		<http:listener doc:name="Listener" doc:id="f6956f08-bfd8-4f44-9fac-d4a1c25baa22" config-ref="HTTP_Listener_6061_learnmulesoft" path="/batchpro01"/>
+		<ee:transform doc:name="Array of 10 to 15" doc:id="53e8432f-8a23-4ec3-9616-abfe1d26eb0e" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+10 to 15]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Before Batch Job" doc:id="84ce855f-cc1f-4245-8638-02c063ab07c3" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="batchJob" ><![CDATA[10]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger Payload" doc:id="8ad710a0-7790-43c7-84ec-c861b7570bd0" message="#[payload]"/>
+		<batch:job jobName="B01" doc:id="bfb4c0ef-d84c-4266-89a3-cf3569c5b93b" >
+			<batch:process-records >
+				<batch:step name="BSTEP01" doc:id="c70001c3-bc1b-4d02-9cdf-7c7730314af0" >
+					<logger level="INFO" doc:name="Logger BSTEP01" doc:id="1e4fb432-4306-4686-bc27-8b060f76e9f7" message="inside B01 - #[payload]"/>
+					<ee:transform doc:name="Chang The value" doc:id="9b06e9e8-9c36-4d15-8b3e-5a74a957dcb2" >
+						<ee:message >
+						</ee:message>
+						<ee:variables >
+							<ee:set-variable variableName="beforeAfterJobBatch" ><![CDATA[%dw 2.0
+output application/json
+---
+vars.batchJob + payload]]></ee:set-variable>
+						</ee:variables>
+					</ee:transform>
+					<logger level="INFO" doc:name="Logger" doc:id="0b52930b-c226-48b8-8ef9-7c59026ed4e5" message="#[vars.beforeAfterJobBatch]"/>
+				</batch:step>
+				<batch:step name="BSTEP02" doc:id="ec781972-cb4c-467e-b05b-e369e24c20bd" >
+					<logger level="INFO" doc:name="Logger Print Payload" doc:id="efd9b1d3-b447-4913-a2df-0da0b110d2a8" message="print payload: #[payload]"/>
+					<ee:transform doc:name="Transform Message" doc:id="7210adaf-9acd-4b33-a511-2fe27547b018" >
+						<ee:message >
+							<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+						</ee:message>
+					</ee:transform>
+					<logger level="INFO" doc:name="Logger Abstract" doc:id="28e7a991-22e8-4d5b-b344-d3949e94ac86" />
+				</batch:step>
+				<batch:step name="B01S03" doc:id="0240b97a-a6c9-4890-b53c-ebd251ccf96c" >
+					<logger level="INFO" doc:name="Logger Print Payload" doc:id="e11e575a-d8c2-4679-9f66-3bcf9fd0b16e" message="print payload: #[payload]" />
+					<logger level="INFO" doc:name="Logger Abstract" doc:id="f6090c8b-0192-42f0-b003-90f74f1ea172" />
+				</batch:step>
+			</batch:process-records>
+			<batch:on-complete >
+				<logger level="INFO" doc:name="Logger On Complete" doc:id="7680333a-8f14-48ed-bf61-9d84eb446a45" message="onComplete B01 - #[payload]"/>
+			</batch:on-complete>
+		</batch:job>
+		<ee:transform doc:name="Print Payload Outside Batch Job" doc:id="fedff0a6-9d5e-4f5b-ac7b-eab2b23ad0d2" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="BatchProcessing-POC02" doc:id="0c3faaa3-01c7-4405-9736-93e97c2b086c" >
+		<http:listener doc:name="Listener" doc:id="bd009561-fb24-4703-becd-68522cf5d197" config-ref="HTTP_Listener_6061_learnmulesoft" path="/batchpro02"/>
+		<ee:transform doc:name="Number And String" doc:id="6035a10d-20d6-4ca1-be83-80ffffcc68ec" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+[
+	35,35,58, "Bene", 38, "Santos"
+]]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<batch:job jobName="B0201" doc:id="97ef7b18-842e-4cf1-bebe-ea5bd3f693a2" >
+			<batch:process-records >
+				<batch:step name="B02S01" doc:id="e6605e05-ad44-4e63-9c68-b9e11c9c04d1" acceptPolicy="ALL">
+					<logger level="INFO" doc:name="Logger Payload" doc:id="612be9ce-b312-4e0b-9590-235f757b4aea" message='#["\n"] print payload: #[payload]'/>
+					<ee:transform doc:name="Add10ToPayload" doc:id="f8f4436a-db59-4eba-a433-9eaf27af8e95" >
+						<ee:message >
+							<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload + 10 as Number]]></ee:set-payload>
+						</ee:message>
+					</ee:transform>
+					<logger level="INFO" doc:name="Logger After" doc:id="6cc7da05-3f60-41dc-8d22-5549808f5319" message='#["\n"] after-transformation: #[payload]'/>
+				</batch:step>
+			</batch:process-records>
+			<batch:on-complete >
+				<logger level="INFO" doc:name="Logger Final" doc:id="7b0a41e4-9a64-4043-902d-a83678e17364" message="final: #[payload]"/>
+				<ee:transform doc:name="Final Payload" doc:id="3f320def-9b9e-47bf-98d9-7d2f0eaba931" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</batch:on-complete>
+		</batch:job>
+	</flow>
+	
+</mule>
