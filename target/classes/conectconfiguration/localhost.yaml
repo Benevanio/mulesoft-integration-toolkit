@@ -1,0 +1,12 @@
+mysqlDatabse:
+  host: "localhost"
+  port: "3306"
+  user: "root"
+  password: "194836"
+  database: "mulesoft_tutorial" 
+  path: "/implementdbsc"
+httpListener:
+  host: "localhost"
+  port: "6061"
+  readTimeout: "3000"
+  basepath: "/learnmulesoft"

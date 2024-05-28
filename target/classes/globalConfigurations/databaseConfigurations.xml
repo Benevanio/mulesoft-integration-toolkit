@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+<mule xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd">
 	<db:config name="MySQLServer_mulesoftUser" doc:name="Database Config" doc:id="852049b9-d35f-41a0-a37d-265ac912376d" >
-		<db:my-sql-connection host="localhost" port="3306" user="root" password="194836" database="mulesoft_tutorial"/>
+		<db:my-sql-connection host="${mysqlDatabse.host}" port="${mysqlDatabse.port}" user="${mysqlDatabse.user}" password="${mysqlDatabse.password}" database="${mysqlDatabse.database}"/>
 	</db:config>
+	<configuration-properties doc:name="Configuration properties" doc:id="f330b097-efdb-46ee-9c7a-7304d8c2e611" file="conectconfiguration\localhost.yaml" />
 </mule>

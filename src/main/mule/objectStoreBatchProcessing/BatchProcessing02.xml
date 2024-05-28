@@ -7,7 +7,7 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
 http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/batch/current/mule-batch.xsd">
 	<flow name="BatchProcessingFlow-POC01" doc:id="c251c546-82a0-4171-98cf-91d83eb58acf" >
-		<http:listener doc:name="Listener01" doc:id="2f73c6a2-00b8-4c52-bb33-653fb41d5bc8" config-ref="HTTP_Listener_6061_learnmulesoft" path="/batchpro01" />
+		<http:listener doc:name="Listener01" doc:id="2f73c6a2-00b8-4c52-bb33-653fb41d5bc8" config-ref="HTTP_Listener_6061_learnmulesoft" path="/batchpro03" />
 		<ee:transform doc:name="Array of 1 to 100" doc:id="f26f09b3-8b0c-4df1-ae77-40bd16bcdcff" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
